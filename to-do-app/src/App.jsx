@@ -11,6 +11,9 @@ function App() {
     description:''
   })
 
+  const [editTask,setEditTask] = useState({name:'',description:''})
+  const [editTaskId,setEditTaskId] = useState(null)
+
   const handleAddTask = async(e) => {
     e.preventDefault()
     try {
@@ -55,6 +58,13 @@ function App() {
       }
     }
 
+    const StartEdit = async(task) => {
+      setEditTaskId(task._id)
+      setEditTask({name:task.name,description:task.description})
+    }
+
+
+
 
 
 
@@ -69,14 +79,16 @@ function App() {
       </form>
 
       <div className="tasks">
-
-        <p>{tasks?.map((task) => 
-        <>
-        <li key={task._id}>{task.name}-{task.description}</li>
+        <ul>
+        {tasks?.map((task) => 
+      
+        <li key={task._id}>{task.name}-{task.description}
          <button onClick={()=>DeleteTask(task._id)}>Delete</button>
-         <button>Edit</button>
-         </>
-        )}</p>
+         <button onClick={()=>StartEdit(task)}>Edit</button>
+         </li>
+       
+        )}
+        </ul>
       </div>
     </div>
       

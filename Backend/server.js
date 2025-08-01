@@ -42,6 +42,17 @@ app.delete('/:id',async(req,res) => {
     }
 })
 
+app.put('/:id',async(req,res) => {
+    try {
+        const {id} =req.params
+        const {name,description} = req.body
+        const editTask = await Task.findByIdAndUpdate(id,{name,description})
+        res.status(200).json({message:'Updeated sucessfully',success:true})
+    } catch (error) {
+         res.status(500).json({success:false,message:'Internal server error'})
+    }
+})
+
 app.listen(3000,(req,res) => {
     console.log('Server listening to port 3000')
 })
