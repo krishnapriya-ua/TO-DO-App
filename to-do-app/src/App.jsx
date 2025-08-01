@@ -8,7 +8,8 @@ function App() {
   const [tasks,setTasks] = useState([])
   const [newTask,setNewTask] = useState({
     name:'',
-    description:''
+    description:'',
+    status:false
   })
 
   const [editTask,setEditTask] = useState({name:'',description:''})
@@ -78,6 +79,16 @@ function App() {
     }
 
 
+    const ToggleStatus = async(id,newStatus) =>{
+      try {
+        const response = await axios.put(`http://localhost:3000/status/${id}`,{status:newStatus})
+        if(response.data.success){
+          setTasks(tasks.map(task=>task._id===id?{...task,status:newStatus}:task))
+        }
+      } catch (error) {
+        console.log('some error')
+      }
+    }
 
 
 
@@ -102,10 +113,12 @@ function App() {
         <ul>
         {tasks?.map((task) => 
       
-        <li key={task._id}>{task.name}-{task.description}
+        <div key={task._id}>
+        <input type='checkbox' checked={task.status} onChange={()=>ToggleStatus(task._id,!task.status)}/>
+        <span style={{textDecoration:task.status?'line-through':'none'}}>{task.name}-{task.description}</span>
          <button onClick={()=>DeleteTask(task._id)}>Delete</button>
          <button onClick={()=>StartEdit(task)}>Edit</button>
-         </li>
+         </div>
        
         )}
         </ul>

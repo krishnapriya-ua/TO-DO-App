@@ -53,6 +53,17 @@ app.put('/:id',async(req,res) => {
     }
 })
 
+app.put('/status/:id',async(req,res)=>{
+    try {
+        const {id} = req.params
+        const {status} = req.body
+        const taskstatus = await Task.findByIdAndUpdate(id,{status:status})
+        res.status(200).json({message:'Updeated sucessfully',success:true})
+    } catch (error) {
+        res.status(500).json({success:false,message:'Internal server error'})
+    }
+})
+
 app.listen(3000,(req,res) => {
     console.log('Server listening to port 3000')
 })
