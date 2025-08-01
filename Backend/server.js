@@ -32,7 +32,7 @@ app.get('/',async(req,res)=>{
     }
 })
 
-app.delete('/',async(req,res) => {
+app.delete('/:id',async(req,res) => {
     try {
         const {id} = req.params
         const delteTask = await Task.findByIdAndDelete(id)

@@ -51,7 +51,7 @@ function App() {
     const DeleteTask = async(id)=>{
       const response = await axios.delete(`http://localhost:3000/${id}`)
       if(response.data.success){
-        setTasks(tasks.filter(task=>task.id!==id))
+        setTasks(tasks.filter(task=>task._id!==id))
       }
     }
 
