@@ -63,6 +63,19 @@ function App() {
       setEditTask({name:task.name,description:task.description})
     }
 
+    const updateTask = async(e)=>{
+      e.preventDefault()
+      try {
+        const response = await axios.put(`http://localhost:3000/${editTaskId}`,editTask)
+        if(response.data.success){
+          setTasks(tasks.map(task=>task._id === editTaskId ? { ...task, ...editTask } : task))
+          setEditTaskId(null)
+          setEditTask({name:'',description:''})
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
 
 
 
@@ -77,6 +90,13 @@ function App() {
         <input placeholder='Enter description' value={newTask.description} onChange={(e)=>setNewTask({...newTask,description:e.target.value})}/>
         <button onClick={handleAddTask} >Add Task</button>
       </form>
+      {editTaskId && (
+        <form>
+          <input type="text" value={editTask.name} onChange={(e)=>setEditTask({...editTask,name:e.target.value})} />
+          <input type="text" value={editTask.description} onChange={(e)=>setEditTask({...editTask,description:e.target.value})} />
+          <button onClick={updateTask}>Update</button>
+        </form>
+      )}
 
       <div className="tasks">
         <ul>
